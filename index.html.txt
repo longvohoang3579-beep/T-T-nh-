@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Quỳnh Như 💕</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden; /* Ẩn thanh cuộn */
+        }
+
+        /* Container chứa ảnh nền 360 */
+        #panorama-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Nằm dưới cùng */
+        }
+
+        /* Container chính chứa form câu hỏi */
+        #main-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10; /* Nằm nổi lên trên nền 360 */
+            
+            background: rgba(255, 255, 255, 0.85); /* Nền trắng bán trong suốt */
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            backdrop-filter: blur(5px); /* Hiệu ứng mờ kính phía sau */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Đã xóa ảnh Hello Kitty */
+
+        h2, h3 { color: #d63384; margin: 15px 0; font-size: 18px; }
+        
+        .question-box { margin-bottom: 20px; text-align: left; }
+        
+        label { display: block; margin: 8px 0; color: #333; cursor: pointer; font-weight: 500; }
+        
+        textarea {
+            width: 100%;
+            height: 90px;
+            border: 2px solid #ffb6c1;
+            border-radius: 12px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: none;
+        }
+
+        button#btnSubmit {
+            background: linear-gradient(45deg, #ff69b4, #ff1493);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        button#btnSubmit:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4); }
+
+        /* Nút bật nhạc */
+        #music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: #d63384;
+            transition: all 0.3s;
+        }
+        #music-control:hover { background: white; transform: scale(1.05); }
+        #music-control span { margin-left: 5px; }
+
+        /* Ẩn input radio mặc định */
+        input[type="radio"] { accent-color: #ff1493; transform: scale(1.2); margin-right: 8px; }
+
+        /* Hiệu ứng sau khi gửi (giữ nguyên) */
+        #animation-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: black; display: none; z-index: 100; overflow: hidden;
+        }
+        .falling-text {
+            position: absolute; color: #ff69b4; font-weight: bold; font-size: 18px;
+            user-select: none; white-space: nowrap; animation: fall linear infinite;
+        }
+        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 2s infinite; }
+        @keyframes fall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
+        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="nhacnen.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát nhạc.
+    </audio>
+
+    <div id="music-control" onclick="toggleMusic()">
+        🎵 <span>Bật nhạc "Nơi này có anh"</span>
+    </div>
+
+    <div id="panorama-container"></div>
+
+    <div id="main-container">
+        <form id="loveForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+            
+            <div class="question-box">
+                <h3>Mấy bữa nay Quỳnh Như cảm thấy tui như thế nào? 🤔</h3>
+                <label><input type="radio" name="Cam_nghi" value="Tốt" required> A. Tốt 😇</label>
+                <label><input type="radio" name="Cam_nghi" value="Không Tốt"> B. Không Tốt 🥺</label>
+                <label><input type="radio" name="Cam_nghi" value="Bình thường"> C. Bình thường 😐</label>
+            </div>
+
+            <div class="question-box">
+                <h3>Cần tui thay đổi gì để Giáng sinh này tui có ny hong? 🎄</h3>
+                <textarea name="Loi_khuyen" placeholder="Viết ngắn gọn khoảng 200 chữ thui nha..." required></textarea>
+            </div>
+
+            <button type="submit" id="btnSubmit">Gửi cho tui đi 💕</button>
+        </form>
+    </div>
+
+    <div id="animation-layer"></div>
+
+    <script>
+        // 1. Cấu hình ảnh 360 độ (Dùng ảnh mẫu cảnh đẹp lãng mạn)
+        pannellum.viewer('panorama-container', {
+            "type": "equirectangular",
+            // Đây là link ảnh 360 độ mẫu. Bạn có thể tìm ảnh khác trên mạng và thay link vào đây.
+            "panorama": "https://i.imgur.com/U2t7zK3.jpeg", 
+            "autoLoad": true,
+            "autoRotate": -2, // Tự động xoay chậm
+            "compass": false,
+            "showControls": false // Ẩn các nút điều khiển để nhìn cho thật
+        });
+
+        // 2. Xử lý bật/tắt nhạc
+        const bgMusic = document.getElementById('bgMusic');
+        const musicControl = document.getElementById('music-control');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicControl.innerHTML = '🎵 <span>Bật nhạc</span>';
+                isMusicPlaying = false;
+            } else {
+                // Cố gắng phát nhạc
+                bgMusic.play().then(() => {
+                    musicControl.innerHTML = '🔇 <span>Tắt nhạc</span>';
+                    isMusicPlaying = true;
+                    // Ẩn nút sau 3 giây cho đỡ vướng
+                    setTimeout(() => { musicControl.style.opacity = '0.5'; }, 3000);
+                }).catch(error => {
+                    console.log("Không thể phát nhạc tự động do chính sách trình duyệt.");
+                    alert("Bạn hãy chạm vào màn hình một lần nữa để nhạc bắt đầu phát nhé!");
+                });
+            }
+        }
+        
+        // --- Phần xử lý gửi form và hiệu ứng chữ rơi (Giữ nguyên như cũ) ---
+        const form = document.getElementById('loveForm');
+        const mainContainer = document.getElementById('main-container');
+        const animationLayer = document.getElementById('animation-layer');
+        const words = ["yeu qnhu💕", "mot cô gái dễ thương😘", "mãi yeu💞", "chúc ngày 3/12 vui vẻ🥰", "sớm qlaii voi tui 😻", "nhớ em nhiều 💖", "xinh đẹp tuyệt vời 🌹", "công chúa của tui 👑"];
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            fetch(form.action, { method: form.method, body: formData, headers: {'Accept': 'application/json'} })
+            .then(response => { startAnimation(); }).catch(error => { startAnimation(); });
+        });
+
+        function startAnimation() {
+            mainContainer.style.display = 'none';
+            animationLayer.style.display = 'block';
+            document.body.style.backgroundColor = 'black';
+            document.getElementById('panorama-container').style.display = 'none'; // Ẩn nền 360
+            musicControl.style.display = 'none'; // Ẩn nút nhạc
+
+            for(let i=0; i<50; i++) { createStar(); }
+            setInterval(createFallingText, 300);
+        }
+
+        function createStar() {
+            const star = document.createElement('div'); star.classList.add('star');
+            const size = Math.random() * 3;
+            star.style.width = size + 'px'; star.style.height = size + 'px';
+            star.style.left = Math.random() * 100 + 'vw'; star.style.top = Math.random() * 100 + 'vh';
+            animationLayer.appendChild(star);
+        }
+
+        function createFallingText() {
+            const text = document.createElement('div'); text.classList.add('falling-text');
+            text.innerText = words[Math.floor(Math.random() * words.length)];
+            text.style.left = Math.random() * 90 + 'vw'; 
+            text.style.animationDuration = (Math.random() * 5 + 3) + 's'; 
+            text.style.fontSize = (Math.random() * 10 + 16) + 'px';
+            animationLayer.appendChild(text);
+            setTimeout(() => { text.remove(); }, 8000);
+        }
+    </script>
+</body>
+</html>
