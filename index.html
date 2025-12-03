@@ -12,220 +12,244 @@
             height: 100%;
             margin: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden; /* Ẩn thanh cuộn */
+            overflow: hidden;
+            background-color: #000;
         }
 
-        /* Container chứa ảnh nền 360 */
-        #panorama-container {
+        /* Khung nhìn 360 độ */
+        #panorama {
+            width: 100%;
+            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1; /* Nằm dưới cùng */
+            z-index: 1;
         }
 
-        /* Container chính chứa form câu hỏi */
-        #main-container {
+        /* Hiệu ứng Sao băng (Shooting Stars) */
+        .meteor {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+            animation: meteor-fall 3s linear infinite;
+            transform: rotate(-45deg);
+            pointer-events: none; /* Để không che mất chuột khi xoay hình */
+            z-index: 2; /* Nằm trên nền 360 nhưng dưới form */
+            opacity: 0;
+        }
+
+        @keyframes meteor-fall {
+            0% { transform: translate(-50vh, -50vh) rotate(-45deg); opacity: 1; }
+            100% { transform: translate(50vh, 50vh) rotate(-45deg); opacity: 0; }
+        }
+
+        /* Form kính mờ (Glassmorphism) */
+        #card-container {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10; /* Nằm nổi lên trên nền 360 */
-            
-            background: rgba(255, 255, 255, 0.85); /* Nền trắng bán trong suốt */
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             width: 90%;
-            max-width: 420px;
+            max-width: 400px;
+            padding: 30px;
+            border-radius: 20px;
+            background: rgba(255, 192, 203, 0.15); /* Hồng cực nhạt trong suốt */
+            backdrop-filter: blur(10px); /* Làm mờ hậu cảnh sau lưng form */
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.6);
+            z-index: 10;
             text-align: center;
-            backdrop-filter: blur(5px); /* Hiệu ứng mờ kính phía sau */
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
         }
 
-        /* Đã xóa ảnh Hello Kitty */
+        /* Chữ 3D nổi khối */
+        h2, h3 {
+            font-size: 20px;
+            color: #fff;
+            text-shadow: 
+                0 1px 0 #ff69b4, 
+                0 2px 0 #ff69b4, 
+                0 3px 0 #ff69b4, 
+                0 4px 10px rgba(0,0,0,0.5); /* Tạo bóng đổ 3D */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-        h2, h3 { color: #d63384; margin: 15px 0; font-size: 18px; }
-        
         .question-box { margin-bottom: 20px; text-align: left; }
-        
-        label { display: block; margin: 8px 0; color: #333; cursor: pointer; font-weight: 500; }
-        
+
+        label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+            font-size: 16px;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
         textarea {
             width: 100%;
-            height: 90px;
-            border: 2px solid #ffb6c1;
-            border-radius: 12px;
+            height: 80px;
+            border-radius: 10px;
+            border: none;
             padding: 10px;
-            box-sizing: border-box;
             font-family: inherit;
-            resize: none;
+            background: rgba(255, 255, 255, 0.8);
         }
 
         button#btnSubmit {
-            background: linear-gradient(45deg, #ff69b4, #ff1493);
-            color: white;
+            width: 100%;
+            padding: 12px;
             border: none;
-            padding: 14px 25px;
-            border-radius: 30px;
+            border-radius: 25px;
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            color: white;
             font-size: 18px;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.5);
+            transition: transform 0.2s;
         }
+        button#btnSubmit:hover { transform: scale(1.05); }
 
-        button#btnSubmit:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4); }
-
-        /* Nút bật nhạc */
-        #music-control {
+        /* Nút nhạc */
+        #music-btn {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 20;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 30px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            font-weight: bold;
-            color: #d63384;
-            transition: all 0.3s;
+            top: 20px; right: 20px; z-index: 100;
+            background: rgba(255,255,255,0.2);
+            color: white; border: 1px solid white;
+            padding: 10px 20px; border-radius: 30px;
+            cursor: pointer; backdrop-filter: blur(5px);
         }
-        #music-control:hover { background: white; transform: scale(1.05); }
-        #music-control span { margin-left: 5px; }
 
-        /* Ẩn input radio mặc định */
-        input[type="radio"] { accent-color: #ff1493; transform: scale(1.2); margin-right: 8px; }
-
-        /* Hiệu ứng sau khi gửi (giữ nguyên) */
-        #animation-layer {
+        /* Hiệu ứng sau khi gửi */
+        #animation-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: black; display: none; z-index: 100; overflow: hidden;
+            background: black; z-index: 200; display: none; overflow: hidden;
         }
-        .falling-text {
-            position: absolute; color: #ff69b4; font-weight: bold; font-size: 18px;
-            user-select: none; white-space: nowrap; animation: fall linear infinite;
+        .falling-word {
+            position: absolute;
+            color: #ff69b4;
+            font-weight: bold;
+            font-size: 20px;
+            text-shadow: 0 0 10px #ff1493;
+            animation: fall linear infinite;
+            white-space: nowrap;
         }
-        .star { position: absolute; background: white; border-radius: 50%; animation: twinkle 2s infinite; }
-        @keyframes fall { 0% { transform: translateY(-100px); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(110vh); opacity: 0; } }
-        @keyframes twinkle { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+        @keyframes fall { to { transform: translateY(110vh); } }
+
     </style>
 </head>
 <body>
 
     <audio id="bgMusic" loop>
         <source src="nhacnen.mp3" type="audio/mpeg">
-        Trình duyệt của bạn không hỗ trợ phát nhạc.
     </audio>
+    <button id="music-btn" onclick="toggleMusic()">🎵 Bật nhạc "Nơi này có anh"</button>
 
-    <div id="music-control" onclick="toggleMusic()">
-        🎵 <span>Bật nhạc "Nơi này có anh"</span>
-    </div>
+    <div id="panorama"></div>
 
-    <div id="panorama-container"></div>
+    <div id="meteors"></div>
 
-    <div id="main-container">
+    <div id="card-container">
         <form id="loveForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
-            
+            <h3>Mấy bữa nay Quỳnh Như cảm thấy tui như thế nào? 🤔</h3>
             <div class="question-box">
-                <h3>Mấy bữa nay Quỳnh Như cảm thấy tui như thế nào? 🤔</h3>
-                <label><input type="radio" name="Cam_nghi" value="Tốt" required> A. Tốt 😇</label>
-                <label><input type="radio" name="Cam_nghi" value="Không Tốt"> B. Không Tốt 🥺</label>
+                <label><input type="radio" name="Cam_nghi" value="Tốt" required> A. Tốt lắm 🥰</label>
+                <label><input type="radio" name="Cam_nghi" value="Không Tốt"> B. Hong Tốt 🥺</label>
                 <label><input type="radio" name="Cam_nghi" value="Bình thường"> C. Bình thường 😐</label>
             </div>
 
+            <h3>Cần tui thay đổi gì để Giáng sinh này tui có ny hong? 🎄</h3>
             <div class="question-box">
-                <h3>Cần tui thay đổi gì để Giáng sinh này tui có ny hong? 🎄</h3>
-                <textarea name="Loi_khuyen" placeholder="Viết ngắn gọn khoảng 200 chữ thui nha..." required></textarea>
+                <textarea name="Loi_khuyen" placeholder="Viết gì đó đi mà..." required></textarea>
             </div>
 
             <button type="submit" id="btnSubmit">Gửi cho tui đi 💕</button>
         </form>
     </div>
 
-    <div id="animation-layer"></div>
+    <div id="animation-overlay"></div>
 
     <script>
-        // 1. Cấu hình ảnh 360 độ (Dùng ảnh mẫu cảnh đẹp lãng mạn)
-        pannellum.viewer('panorama-container', {
+        // --- CẤU HÌNH 360 ĐỘ ---
+        pannellum.viewer('panorama', {
             "type": "equirectangular",
-            // Đây là link ảnh 360 độ mẫu. Bạn có thể tìm ảnh khác trên mạng và thay link vào đây.
-            "panorama": "https://i.imgur.com/U2t7zK3.jpeg", 
+            "panorama": "https://i.imgur.com/8F9Yx7L.jpg", // Ảnh bầu trời đêm đầy sao cực đẹp
             "autoLoad": true,
-            "autoRotate": -2, // Tự động xoay chậm
-            "compass": false,
-            "showControls": false // Ẩn các nút điều khiển để nhìn cho thật
+            "autoRotate": -2, // Tự động xoay nhẹ
+            "showControls": false // Ẩn nút điều khiển cho thật
         });
 
-        // 2. Xử lý bật/tắt nhạc
-        const bgMusic = document.getElementById('bgMusic');
-        const musicControl = document.getElementById('music-control');
-        let isMusicPlaying = false;
+        // --- TẠO SAO BĂNG ---
+        const meteorContainer = document.getElementById('meteors');
+        function createMeteors() {
+            setInterval(() => {
+                const meteor = document.createElement('div');
+                meteor.classList.add('meteor');
+                meteor.style.left = Math.random() * 100 + 'vw';
+                meteor.style.top = Math.random() * 50 + 'vh';
+                meteor.style.animationDuration = (Math.random() * 1 + 0.5) + 's'; // Tốc độ ngẫu nhiên
+                meteorContainer.appendChild(meteor);
+                
+                // Xóa sao băng sau khi bay xong
+                setTimeout(() => { meteor.remove(); }, 2000);
+            }, 800); // 0.8 giây xuất hiện 1 sao băng
+        }
+        createMeteors();
 
+        // --- XỬ LÝ NHẠC ---
+        const audio = document.getElementById('bgMusic');
+        const btn = document.getElementById('music-btn');
+        let playing = false;
         function toggleMusic() {
-            if (isMusicPlaying) {
-                bgMusic.pause();
-                musicControl.innerHTML = '🎵 <span>Bật nhạc</span>';
-                isMusicPlaying = false;
+            if(!playing) {
+                audio.play().then(() => {
+                    playing = true;
+                    btn.innerText = "🔈 Tắt nhạc";
+                    btn.style.opacity = "0.5";
+                }).catch(e => alert("Hãy chạm vào màn hình lần nữa để nhạc chạy nhé!"));
             } else {
-                // Cố gắng phát nhạc
-                bgMusic.play().then(() => {
-                    musicControl.innerHTML = '🔇 <span>Tắt nhạc</span>';
-                    isMusicPlaying = true;
-                    // Ẩn nút sau 3 giây cho đỡ vướng
-                    setTimeout(() => { musicControl.style.opacity = '0.5'; }, 3000);
-                }).catch(error => {
-                    console.log("Không thể phát nhạc tự động do chính sách trình duyệt.");
-                    alert("Bạn hãy chạm vào màn hình một lần nữa để nhạc bắt đầu phát nhé!");
-                });
+                audio.pause();
+                playing = false;
+                btn.innerText = "🎵 Bật nhạc";
+                btn.style.opacity = "1";
             }
         }
-        
-        // --- Phần xử lý gửi form và hiệu ứng chữ rơi (Giữ nguyên như cũ) ---
-        const form = document.getElementById('loveForm');
-        const mainContainer = document.getElementById('main-container');
-        const animationLayer = document.getElementById('animation-layer');
-        const words = ["yeu qnhu💕", "mot cô gái dễ thương😘", "mãi yeu💞", "chúc ngày 3/12 vui vẻ🥰", "sớm qlaii voi tui 😻", "nhớ em nhiều 💖", "xinh đẹp tuyệt vời 🌹", "công chúa của tui 👑"];
 
-        form.addEventListener('submit', function(e) {
+        // --- XỬ LÝ GỬI FORM & CHỮ RƠI ---
+        const form = document.getElementById('loveForm');
+        const overlay = document.getElementById('animation-overlay');
+        const words = ["Yêu Q.Như 💕", "Dễ thương xỉu 😘", "Mãi yêu 💞", "Giáng sinh vui vẻ 🎄", "Sớm quay lại với tui 😻", "Miss you ❤️"];
+
+        form.addEventListener('submit', (e) => {
             e.preventDefault();
+            // Gửi dữ liệu đi (giả lập hoặc gửi thật)
             const formData = new FormData(form);
             fetch(form.action, { method: form.method, body: formData, headers: {'Accept': 'application/json'} })
-            .then(response => { startAnimation(); }).catch(error => { startAnimation(); });
+            .then(() => runEffect()).catch(() => runEffect());
         });
 
-        function startAnimation() {
-            mainContainer.style.display = 'none';
-            animationLayer.style.display = 'block';
-            document.body.style.backgroundColor = 'black';
-            document.getElementById('panorama-container').style.display = 'none'; // Ẩn nền 360
-            musicControl.style.display = 'none'; // Ẩn nút nhạc
+        function runEffect() {
+            document.getElementById('card-container').style.display = 'none';
+            document.getElementById('music-btn').style.display = 'none';
+            document.getElementById('panorama').style.display = 'none'; // Tắt nền 360 cho tối hẳn
+            overlay.style.display = 'block';
 
-            for(let i=0; i<50; i++) { createStar(); }
-            setInterval(createFallingText, 300);
-        }
-
-        function createStar() {
-            const star = document.createElement('div'); star.classList.add('star');
-            const size = Math.random() * 3;
-            star.style.width = size + 'px'; star.style.height = size + 'px';
-            star.style.left = Math.random() * 100 + 'vw'; star.style.top = Math.random() * 100 + 'vh';
-            animationLayer.appendChild(star);
-        }
-
-        function createFallingText() {
-            const text = document.createElement('div'); text.classList.add('falling-text');
-            text.innerText = words[Math.floor(Math.random() * words.length)];
-            text.style.left = Math.random() * 90 + 'vw'; 
-            text.style.animationDuration = (Math.random() * 5 + 3) + 's'; 
-            text.style.fontSize = (Math.random() * 10 + 16) + 'px';
-            animationLayer.appendChild(text);
-            setTimeout(() => { text.remove(); }, 8000);
+            // Tạo hiệu ứng chữ rơi
+            setInterval(() => {
+                const div = document.createElement('div');
+                div.classList.add('falling-word');
+                div.innerText = words[Math.floor(Math.random() * words.length)];
+                div.style.left = Math.random() * 90 + 'vw';
+                div.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                div.style.color = `hsl(${Math.random()*60 + 300}, 100%, 70%)`; // Các tông màu hồng/tím
+                div.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                overlay.appendChild(div);
+                setTimeout(() => div.remove(), 6000);
+            }, 300);
         }
     </script>
 </body>
